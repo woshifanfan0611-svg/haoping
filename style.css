@@ -1,0 +1,579 @@
+/* 好评文案助手 · H5 版样式 */
+/* rpx → px 换算基准：1rpx ≈ 0.5px（375px 宽度参考） */
+
+/* ========== 微信浏览器引导 ========== */
+#wechat-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #F5F5F5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.wechat-guide-content {
+  text-align: center;
+  padding: 40px 32px;
+  max-width: 320px;
+}
+
+.wechat-guide-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+}
+
+.wechat-guide-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.wechat-guide-desc {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.wechat-guide-steps {
+  text-align: left;
+  background: #FFF;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.wechat-step {
+  font-size: 15px;
+  color: #333;
+  padding: 10px 0;
+  line-height: 1.6;
+}
+
+.wechat-step:first-child {
+  border-bottom: 1px solid #EEE;
+}
+
+.wechat-step b {
+  color: #07C160;
+}
+
+/* ========== Reset ========== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #F5F5F5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+  color: #333;
+  -webkit-text-size-adjust: 100%;
+}
+
+.page {
+  min-height: 100vh;
+  padding-bottom: 20px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ========== 平台切换标签 ========== */
+.platform-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.platform-tab {
+  flex: 1;
+  max-width: 140px;
+  text-align: center;
+  padding: 9px 0;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #999;
+  background: #F5F5F5;
+  border: 1px solid #E5E5E5;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+.platform-tab:active {
+  transform: scale(0.95);
+}
+
+/* 美团 - 平台标签选中 */
+.platform-meituan .platform-tab.active {
+  color: #FFF;
+  background: #FFD100;
+  border-color: #FFD100;
+  box-shadow: 0 2px 8px rgba(255, 209, 0, 0.35);
+}
+
+/* 大众点评 - 平台标签选中 */
+.platform-dianping .platform-tab.active {
+  color: #FFF;
+  background: #FF6633;
+  border-color: #FF6633;
+  box-shadow: 0 2px 8px rgba(255, 102, 51, 0.35);
+}
+
+/* ========== Hero 生成按钮 ========== */
+.hero-section {
+  padding: 32px 16px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-btn {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.35s ease;
+  position: relative;
+}
+
+.platform-meituan .hero-btn {
+  background: linear-gradient(135deg, #FFD100, #FFB800);
+  box-shadow: 0 8px 32px rgba(255, 209, 0, 0.45);
+}
+
+.platform-dianping .hero-btn {
+  background: linear-gradient(135deg, #FF6633, #FF5522);
+  box-shadow: 0 8px 32px rgba(255, 102, 51, 0.45);
+}
+
+.hero-btn::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  z-index: -1;
+  animation: heroPulse 2s ease-in-out infinite;
+}
+
+.platform-meituan .hero-btn::after {
+  background: rgba(255, 209, 0, 0.25);
+}
+
+.platform-dianping .hero-btn::after {
+  background: rgba(255, 102, 51, 0.25);
+}
+
+@keyframes heroPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 0; }
+}
+
+.hero-btn:active {
+  transform: scale(0.93);
+}
+
+.hero-icon {
+  font-size: 52px;
+  margin-bottom: 8px;
+}
+
+.hero-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFF;
+  letter-spacing: 2px;
+}
+
+.hero-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 6px;
+}
+
+/* 生成后：大圆缩成小条 */
+.hero-mini {
+  display: none;
+  padding: 10px 28px;
+  border-radius: 22px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #FFF;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.platform-meituan .hero-mini {
+  background: #FFD100;
+}
+
+.platform-dianping .hero-mini {
+  background: #FF6633;
+}
+
+.hero-mini:active {
+  opacity: 0.8;
+  transform: scale(0.96);
+}
+
+/* 状态切换 */
+.page.generated .hero-btn {
+  display: none;
+}
+
+.page.generated .hero-mini {
+  display: block;
+}
+
+.page.generated .hero-section {
+  padding: 16px 16px 8px;
+}
+
+/* ========== 评价标签（已废弃，保留空白兼容）========== */
+.tag-section {
+  display: none;
+}
+.tag-list { display: none; }
+.tag-item { display: none; }
+
+/* ========== 文案展示区 ========== */
+.review-section {
+  padding: 0 16px;
+}
+
+.review-card {
+  background: #FFF;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 100px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Loading 动画 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.platform-meituan .dot {
+  background: #FFD100;
+}
+
+.platform-dianping .dot {
+  background: #FF6633;
+}
+
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  from { opacity: 0.3; transform: translateY(0); }
+  to   { opacity: 1;   transform: translateY(-6px); }
+}
+
+.loading-text {
+  font-size: 13px;
+  color: #999;
+}
+
+/* 文案内容 */
+.review-content {
+  line-height: 1.8;
+}
+
+.review-text {
+  font-size: 15px;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+/* 两种风格 */
+.meituan-style {
+  line-height: 2;
+}
+
+.dianping-style {
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+/* 空状态 */
+.review-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 0;
+}
+
+.empty-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 换一条（已移入 hero-mini，此处保留空白兼容）*/
+
+/* ========== 环境图展示区 ========== */
+.image-section {
+  padding: 16px;
+}
+
+.section-title {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 8px;
+  padding-left: 2px;
+}
+
+.image-list {
+  display: flex;
+  gap: 8px;
+}
+
+.image-item {
+  flex: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.image-item:active {
+  transform: scale(0.96);
+}
+
+.env-image {
+  width: 100%;
+  height: 90px;
+  display: block;
+  object-fit: cover;
+}
+
+.image-label {
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+  padding: 4px 0;
+  background: #FFF;
+}
+
+/* ========== 复制按钮 ========== */
+.action-section {
+  padding: 8px 16px 20px;
+}
+
+.copy-btn {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFF;
+  background: #07C160;
+  border: none;
+  box-shadow: 0 2px 8px rgba(7, 193, 96, 0.35);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.copy-btn:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+.copy-btn:disabled {
+  background: #C0C0C0;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.copy-btn.copied {
+  background: #07C160;
+}
+
+/* ========== Toast ========== */
+.toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #FFF;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 2000;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: toastIn 0.3s ease;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ========== 引导弹窗 (Bottom Sheet) ========== */
+.guide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.guide-sheet {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: #FFF;
+  border-radius: 14px 14px 0 0;
+  padding: 10px 20px 30px;
+  animation: slideUp 0.3s ease;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.guide-handle {
+  width: 30px;
+  height: 3px;
+  background: #DDD;
+  border-radius: 2px;
+  margin: 0 auto 12px;
+}
+
+.guide-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.guide-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 50%;
+  color: #FFF;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.platform-meituan .step-num {
+  background: #FFD100;
+}
+
+.platform-dianping .step-num {
+  background: #FF6633;
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 2px;
+}
+
+.step-title {
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+.step-desc {
+  font-size: 12px;
+  color: #999;
+}
+
+.guide-close-btn {
+  margin-top: 18px;
+  text-align: center;
+  padding: 11px 0;
+  font-size: 15px;
+  color: #FFF;
+  background: #07C160;
+  border-radius: 22px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+.guide-close-btn:active {
+  opacity: 0.85;
+}

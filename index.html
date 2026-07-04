@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>好评文案助手</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 微信浏览器引导 -->
+  <div id="wechat-guide" style="display:none;">
+    <div class="wechat-guide-content">
+      <div class="wechat-guide-icon">⚠️</div>
+      <div class="wechat-guide-title">请在浏览器中打开</div>
+      <div class="wechat-guide-desc">微信内无法正常访问，请按以下步骤操作：</div>
+      <div class="wechat-guide-steps">
+        <div class="wechat-step">1. 点击右上角 <b>···</b></div>
+        <div class="wechat-step">2. 选择 <b>在浏览器中打开</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" class="page platform-meituan">
+
+    <div class="platform-tabs">
+      <div class="platform-tab active" data-platform="meituan" onclick="App.switchPlatform('meituan')">🛵 美团</div>
+      <div class="platform-tab" data-platform="dianping" onclick="App.switchPlatform('dianping')">⭐ 大众点评</div>
+    </div>
+
+    <div class="hero-section" id="hero-section">
+      <div class="hero-btn" onclick="App.generate()">
+        <div class="hero-icon">✨</div>
+        <div class="hero-text">帮我写好评</div>
+        <div class="hero-sub">AI 一键生成 · 点击即用</div>
+      </div>
+      <div class="hero-mini" onclick="App.generate()">🔄 换一条</div>
+    </div>
+
+    <div class="review-section">
+      <div id="review-card" class="review-card">
+        <div class="review-empty">
+          <div class="empty-icon">🤖</div>
+          <div class="empty-text">点击上方按钮，AI 帮你写好评</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="image-section">
+      <div class="section-title">📷 环境实拍（长按图片保存到相册）</div>
+      <div id="image-list" class="image-list"></div>
+    </div>
+
+    <div class="action-section">
+      <button id="copy-btn" class="copy-btn" disabled onclick="App.copy()">📋 复制文案</button>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <div id="guide-overlay" class="guide-overlay hidden" onclick="App.closeGuide()">
+      <div class="guide-sheet" onclick="event.stopPropagation()">
+        <div class="guide-handle"></div>
+        <div class="guide-title">📝 下一步操作</div>
+        <div class="guide-steps">
+          <div class="guide-step"><div class="step-num">1</div><div class="step-content"><div class="step-title">打开美团/大众点评 App</div><div class="step-desc">文案已复制到剪贴板</div></div></div>
+          <div class="guide-step"><div class="step-num">2</div><div class="step-content"><div class="step-title">找到刚才消费的店铺</div><div class="step-desc">搜索店名或从订单进入</div></div></div>
+          <div class="guide-step"><div class="step-num">3</div><div class="step-content"><div class="step-title">写评价 → 粘贴文案</div><div class="step-desc">长按输入框选择"粘贴"</div></div></div>
+          <div class="guide-step"><div class="step-num">4</div><div class="step-content"><div class="step-title">上传环境图片</div><div class="step-desc">从相册选择刚刚保存的环境图</div></div></div>
+          <div class="guide-step"><div class="step-num">5</div><div class="step-content"><div class="step-title">发布好评 ⭐⭐⭐⭐⭐</div><div class="step-desc">感谢你的支持！</div></div></div>
+        </div>
+        <div class="guide-close-btn" onclick="App.closeGuide()">我知道了</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // 微信浏览器检测，引导用户在系统浏览器打开
+    (function() {
+      var ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf('micromessenger') > -1) {
+        document.getElementById('wechat-guide').style.display = 'flex';
+        document.getElementById('app').style.display = 'none';
+      }
+    })();
+  </script>
+</body>
+</html>
