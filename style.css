@@ -1,66 +1,6 @@
 /* 好评文案助手 · H5 版样式 */
 /* rpx → px 换算基准：1rpx ≈ 0.5px（375px 宽度参考） */
 
-/* ========== 微信浏览器引导 ========== */
-#wechat-guide {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #F5F5F5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-}
-
-.wechat-guide-content {
-  text-align: center;
-  padding: 40px 32px;
-  max-width: 320px;
-}
-
-.wechat-guide-icon {
-  font-size: 56px;
-  margin-bottom: 20px;
-}
-
-.wechat-guide-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.wechat-guide-desc {
-  font-size: 14px;
-  color: #999;
-  margin-bottom: 24px;
-  line-height: 1.6;
-}
-
-.wechat-guide-steps {
-  text-align: left;
-  background: #FFF;
-  border-radius: 12px;
-  padding: 20px 24px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-}
-
-.wechat-step {
-  font-size: 15px;
-  color: #333;
-  padding: 10px 0;
-  line-height: 1.6;
-}
-
-.wechat-step:first-child {
-  border-bottom: 1px solid #EEE;
-}
-
-.wechat-step b {
-  color: #07C160;
-}
-
 /* ========== Reset ========== */
 *, *::before, *::after {
   box-sizing: border-box;

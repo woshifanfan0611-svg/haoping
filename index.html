@@ -8,19 +8,6 @@
 </head>
 <body>
 
-  <!-- 微信浏览器引导 -->
-  <div id="wechat-guide" style="display:none;">
-    <div class="wechat-guide-content">
-      <div class="wechat-guide-icon">⚠️</div>
-      <div class="wechat-guide-title">请在浏览器中打开</div>
-      <div class="wechat-guide-desc">微信内无法正常访问，请按以下步骤操作：</div>
-      <div class="wechat-guide-steps">
-        <div class="wechat-step">1. 点击右上角 <b>···</b></div>
-        <div class="wechat-step">2. 选择 <b>在浏览器中打开</b></div>
-      </div>
-    </div>
-  </div>
-
   <div id="app" class="page platform-meituan">
 
     <div class="platform-tabs">
@@ -75,15 +62,5 @@
   </div>
 
   <script src="app.js"></script>
-  <script>
-    // 微信浏览器检测，引导用户在系统浏览器打开
-    (function() {
-      var ua = navigator.userAgent.toLowerCase();
-      if (ua.indexOf('micromessenger') > -1) {
-        document.getElementById('wechat-guide').style.display = 'flex';
-        document.getElementById('app').style.display = 'none';
-      }
-    })();
-  </script>
 </body>
 </html>
