@@ -1,7 +1,13 @@
-// Cloudflare Pages _worker.js
-// 处理 /api/generate，其余交给 Pages 静态文件服务
+// Cloudflare Worker — 好评文案助手 API
+// 独立部署到 workers.dev，与 GitHub Pages 前端配合
+//
+// 部署：npx wrangler deploy
+// 然后在前端 app.js 中设置 API_BASE = 'https://<你的>.workers.dev'
 
-// 店铺亮点库：代码随机选取，AI 只看到被选中的，从根本上杜绝重复
+// ============================================================
+// 店铺亮点库（每次随机选 2 条，AI 只看到被选中的）
+// ============================================================
+
 const HIGHLIGHTS = [
   { title: '免费饮品', detail: '饮料全部免费自取，不用额外花钱买水喝' },
   { title: '禁烟环境', detail: '全店禁烟，空气清新，待一下午都不会被烟味熏' },
@@ -10,7 +16,10 @@ const HIGHLIGHTS = [
   { title: '专业推荐', detail: '店员会根据人数和喜好，帮你挑最适合的游戏，不用自己纠结选什么' },
 ];
 
-// 顾客场景库：代码随机选取，每次不同场景，避免开头重复
+// ============================================================
+// 顾客场景库（每次随机选 1 条，避免开头重复）
+// ============================================================
+
 const SCENES = [
   '你是被朋友推荐来的，工作日下班后跟几个朋友一起过来玩。',
   '你是一个人下午没事干，想找个地方消磨时间，搜到这家店就来了。',
@@ -29,8 +38,24 @@ function pickRandom(arr, n) {
   return shuffled.slice(0, n);
 }
 
-function buildPrompt(platform) {
-  const hl = pickRandom(HIGHLIGHTS, 2);
+// 标签 → 亮点 选择逻辑
+function selectHighlights(tags) {
+  if (!tags || tags.length === 0) return pickRandom(HIGHLIGHTS, 2);
+  const matching = HIGHLIGHTS.filter(h => tags.includes(h.title));
+  if (matching.length === 0) return pickRandom(HIGHLIGHTS, 2);
+  if (matching.length === 1) {
+    const other = HIGHLIGHTS.filter(h => h.title !== matching[0].title);
+    return [matching[0], ...pickRandom(other, 1)];
+  }
+  return pickRandom(matching, 2);
+}
+
+// ============================================================
+// Prompt 构建
+// ============================================================
+
+function buildPrompt(platform, tags) {
+  const hl = selectHighlights(tags);
   const scene = pickRandom(SCENES, 1)[0];
 
   if (platform === 'meituan') {
@@ -80,6 +105,10 @@ ${scene}
   }
 }
 
+// ============================================================
+// 辅助
+// ============================================================
+
 function json(data, status) {
   return new Response(JSON.stringify(data), {
     status: status || 200,
@@ -90,74 +119,79 @@ function json(data, status) {
   });
 }
 
+// ============================================================
+// Worker 入口
+// ============================================================
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // CORS 预检
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        }
+      });
+    }
+
+    // 健康检查
+    if (url.pathname === '/' || url.pathname === '/health') {
+      return json({ status: 'ok', service: '好评文案助手 API' });
+    }
+
     // --- /api/generate ---
     if (url.pathname === '/api/generate') {
-      // CORS 预检
-      if (request.method === 'OPTIONS') {
-        return new Response(null, {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type'
-          }
-        });
-      }
-
       if (request.method !== 'POST') {
         return json({ success: false, error: '请使用 POST 请求' }, 405);
       }
 
-      // Step 1: 解析 body
       let body;
       try { body = await request.json(); }
-      catch (e) { return json({ success: false, error: '请求格式错误' }, 400); }
+      catch { return json({ success: false, error: '请求格式错误' }, 400); }
 
-      // Step 2: 检查 API Key
-      if (!env.DEEPSEEK_API_KEY) {
+      const { platform = 'meituan', tags } = body;
+      const { system, user } = buildPrompt(platform, tags);
+      const apiKey = env.DEEPSEEK_API_KEY;
+
+      if (!apiKey) {
         return json({ success: false, error: '未配置 API Key' }, 500);
       }
 
-      // Step 3: 构建 prompt
-      const { platform = 'meituan' } = body;
-      const { system, user } = buildPrompt(platform);
+      try {
+        const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              { role: 'system', content: system },
+              { role: 'user', content: user }
+            ],
+            temperature: 0.9,
+            max_tokens: 500
+          })
+        });
 
-      // Step 4: 调用 DeepSeek
-      const aiRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${env.DEEPSEEK_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: 'deepseek-chat',
-          messages: [
-            { role: 'system', content: system },
-            { role: 'user', content: user }
-          ],
-          temperature: 0.9,
-          max_tokens: 500
-        })
-      });
+        const data = await res.json();
 
-      if (!aiRes.ok) {
-        const errText = await aiRes.text();
-        return json({ success: false, error: `DeepSeek 返回 ${aiRes.status}` }, 502);
+        if (data.choices && data.choices.length > 0) {
+          return json({ success: true, review: data.choices[0].message.content.trim() });
+        }
+
+        return json({ success: false, error: data.error?.message || 'API 返回为空' }, 502);
+      } catch (err) {
+        return json({ success: false, error: 'AI 服务请求失败，请重试' }, 500);
       }
-
-      const data = await aiRes.json();
-
-      if (data.choices && data.choices.length > 0) {
-        return json({ success: true, review: data.choices[0].message.content.trim() });
-      }
-
-      return json({ success: false, error: 'API 返回为空' }, 502);
     }
 
-    // --- 其他请求交给 Pages 静态文件 ---
-    return env.ASSETS.fetch(request);
+    // 404
+    return json({ error: 'Not Found' }, 404);
   }
 };

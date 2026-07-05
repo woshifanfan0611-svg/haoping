@@ -74,16 +74,35 @@ body {
   box-shadow: 0 2px 8px rgba(255, 102, 51, 0.35);
 }
 
+/* ========== 店铺标题 ========== */
+.store-header {
+  text-align: center;
+  padding: 20px 16px 4px;
+}
+
+.store-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 2px;
+}
+
+.store-sub {
+  font-size: 13px;
+  color: #999;
+  margin-top: 4px;
+}
+
 /* ========== Hero 生成按钮 ========== */
 .hero-section {
-  padding: 32px 16px 16px;
+  padding: 16px 16px 8px;
   display: flex;
   justify-content: center;
 }
 
 .hero-btn {
-  width: 260px;
-  height: 260px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -132,21 +151,21 @@ body {
 }
 
 .hero-icon {
-  font-size: 52px;
-  margin-bottom: 8px;
+  font-size: 38px;
+  margin-bottom: 6px;
 }
 
 .hero-text {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: #FFF;
   letter-spacing: 2px;
 }
 
 .hero-sub {
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255,255,255,0.75);
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 /* 生成后：大圆缩成小条 */
@@ -189,12 +208,6 @@ body {
   padding: 16px 16px 8px;
 }
 
-/* ========== 评价标签（已废弃，保留空白兼容）========== */
-.tag-section {
-  display: none;
-}
-.tag-list { display: none; }
-.tag-item { display: none; }
 
 /* ========== 文案展示区 ========== */
 .review-section {
@@ -292,7 +305,17 @@ body {
   color: #999;
 }
 
-/* 换一条（已移入 hero-mini，此处保留空白兼容）*/
+/* Mock 标记 */
+.mock-badge {
+  font-size: 11px;
+  color: #999;
+  background: #F5F5F5;
+  padding: 4px 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
 
 /* ========== 环境图展示区 ========== */
 .image-section {

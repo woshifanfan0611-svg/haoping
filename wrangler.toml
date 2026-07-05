@@ -1,0 +1,15 @@
+# Cloudflare Worker — 好评文案助手 API
+name = "haoping-api"
+main = "worker.js"
+compatibility_date = "2026-07-05"
+
+# 免费计划：10 万次/天，足够使用
+# 部署命令：npx wrangler deploy
+# 首次部署需登录：npx wrangler login
+
+# 环境变量（部署后通过 dashboard 或 wrangler secret put 设置）
+# DEEPSEEK_API_KEY — DeepSeek API Key
+
+[vars]
+# 非敏感变量可写在这里，API Key 请用 secret：
+# npx wrangler secret put DEEPSEEK_API_KEY

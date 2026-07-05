@@ -10,11 +10,19 @@
 
   <div id="app" class="page platform-meituan">
 
+    <!-- 平台切换 -->
     <div class="platform-tabs">
       <div class="platform-tab active" data-platform="meituan" onclick="App.switchPlatform('meituan')">🛵 美团</div>
       <div class="platform-tab" data-platform="dianping" onclick="App.switchPlatform('dianping')">⭐ 大众点评</div>
     </div>
 
+    <!-- 店铺标题 -->
+    <div class="store-header">
+      <div class="store-name">🪐 火星桌游吧</div>
+      <div class="store-sub">好评文案助手</div>
+    </div>
+
+    <!-- 生成按钮 -->
     <div class="hero-section" id="hero-section">
       <div class="hero-btn" onclick="App.generate()">
         <div class="hero-icon">✨</div>
@@ -24,6 +32,7 @@
       <div class="hero-mini" onclick="App.generate()">🔄 换一条</div>
     </div>
 
+    <!-- 文案展示 -->
     <div class="review-section">
       <div id="review-card" class="review-card">
         <div class="review-empty">
@@ -33,17 +42,21 @@
       </div>
     </div>
 
+    <!-- 环境图 -->
     <div class="image-section">
       <div class="section-title">📷 环境实拍（长按图片保存到相册）</div>
       <div id="image-list" class="image-list"></div>
     </div>
 
+    <!-- 复制按钮 -->
     <div class="action-section">
       <button id="copy-btn" class="copy-btn" disabled onclick="App.copy()">📋 复制文案</button>
     </div>
 
+    <!-- Toast -->
     <div id="toast" class="toast hidden"></div>
 
+    <!-- 引导弹窗 -->
     <div id="guide-overlay" class="guide-overlay hidden" onclick="App.closeGuide()">
       <div class="guide-sheet" onclick="event.stopPropagation()">
         <div class="guide-handle"></div>
